@@ -1,0 +1,34 @@
+version: "3"
+
+# This docker-compose redefine the services:
+# - ZetaChain with 2 nodes (zetacore0, zetacore1) using the upgrade option for cosmovisor
+# - ZetaChain observer set with 2 clients (zetaclient0, zetaclient1) using the background option
+# - Orchestrator with upgrade option
+
+services:
+  zetacore0:
+    entrypoint: ["/root/start-zetacored.sh", "2", "upgrade"]
+    build:
+      context: ../../.
+      dockerfile: Dockerfile-upgrade
+
+  zetacore1:
+    entrypoint: ["/root/start-zetacored.sh", "2", "upgrade"]
+    build:
+      context: ../../.
+      dockerfile: Dockerfile-upgrade
+
+  zetaclient0:
+    entrypoint: ["/root/start-zetaclientd.sh", "background"]
+    build:
+      context: ../../.
+      dockerfile: Dockerfile-upgrade
+
+  zetaclient1:
+    entrypoint: ["/root/start-zetaclientd.sh", "background"]
+    build:
+      context: ../../.
+      dockerfile: Dockerfile-upgrade
+
+  orchestrator:
+    entrypoint: ["/work/start-zetae2e.sh", "local", "upgrade"]
